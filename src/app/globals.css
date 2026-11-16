@@ -1,26 +1,108 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Default: Theme A - Modern Purple & Amber */
+  --bg-primary: #0e121b;
+  --bg-secondary: #141a27;
+  --bg-card: #192032;
+  --bg-card-hover: #1f283d;
+  --border-color: #273248;
+  --border-subtle: #1e2638;
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  --messi-primary: #8b5cf6;
+  --messi-secondary: #a78bfa;
+  --messi-bg: rgba(139, 92, 246, 0.12);
+  --messi-border: rgba(139, 92, 246, 0.35);
+  
+  --ronaldo-primary: #f59e0b;
+  --ronaldo-secondary: #fbbf24;
+  --ronaldo-bg: rgba(245, 158, 11, 0.12);
+  --ronaldo-border: rgba(245, 158, 11, 0.35);
+  
+  --accent-gold: #eab308;
+  --accent-emerald: #10b981;
+  --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-theme="white"] {
+  /* Theme B - Clean White & Dual Bold */
+  --bg-primary: #f1f5f9;
+  --bg-secondary: #e2e8f0;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --border-color: #cbd5e1;
+  --border-subtle: #e2e8f0;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  
+  --messi-primary: #2563eb;
+  --messi-secondary: #3b82f6;
+  --messi-bg: rgba(37, 99, 235, 0.08);
+  --messi-border: rgba(37, 99, 235, 0.25);
+  
+  --ronaldo-primary: #dc2626;
+  --ronaldo-secondary: #ef4444;
+  --ronaldo-bg: rgba(220, 38, 38, 0.08);
+  --ronaldo-border: rgba(220, 38, 38, 0.25);
+  
+  --accent-gold: #d97706;
+  --accent-emerald: #059669;
+  --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+[data-theme="neon"] {
+  /* Theme C - Neon Sports Dark */
+  --bg-primary: #05070a;
+  --bg-secondary: #0a0f16;
+  --bg-card: #0f1722;
+  --bg-card-hover: #15202e;
+  --border-color: #1e2c3e;
+  --border-subtle: #141e2b;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  
+  --messi-primary: #06b6d4;
+  --messi-secondary: #22d3ee;
+  --messi-bg: rgba(6, 182, 212, 0.15);
+  --messi-border: rgba(6, 182, 212, 0.4);
+  
+  --ronaldo-primary: #f97316;
+  --ronaldo-secondary: #fb923c;
+  --ronaldo-bg: rgba(249, 115, 22, 0.15);
+  --ronaldo-border: rgba(249, 115, 22, 0.4);
+  
+  --accent-gold: #facc15;
+  --accent-emerald: #84cc16;
+  --shadow-card: 0 0 25px rgba(0, 0, 0, 0.7);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease, color 0.25s ease;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
