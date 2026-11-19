@@ -119,6 +119,24 @@ export async function fetchLivePlayerSeason(
 }
 
 /**
+ * Fetch the latest available active season data (trying current year down to 2024).
+ */
+export async function fetchLatestActiveSeason(
+  playerId: number,
+  apiKey: string
+): Promise<LivePlayerStats | null> {
+  const currentYear = new Date().getFullYear();
+  const seasonsToTry = Array.from(new Set([currentYear, currentYear - 1, 2025, 2024]));
+  for (const year of seasonsToTry) {
+    const data = await fetchLivePlayerSeason(playerId, year, apiKey);
+    if (data && (data.appearances > 0 || data.goals > 0)) {
+      return data;
+    }
+  }
+  return null;
+}
+
+/**
  * Combines verified baseline data with automated live API updates.
  * If API key is missing or calls fail, it seamlessly returns the verified baseline.
  */
@@ -143,11 +161,9 @@ export async function getDynamicStats(): Promise<DynamicStatsPayload> {
   let isLive = false;
 
   if (apiKey) {
-    // Current year / active seasons
-    const currentYear = new Date().getFullYear();
     const [messiLive, ronaldoLive] = await Promise.all([
-      fetchLivePlayerSeason(PLAYER_IDS.MESSI, currentYear, apiKey),
-      fetchLivePlayerSeason(PLAYER_IDS.RONALDO, currentYear, apiKey),
+      fetchLatestActiveSeason(PLAYER_IDS.MESSI, apiKey),
+      fetchLatestActiveSeason(PLAYER_IDS.RONALDO, apiKey),
     ]);
 
     // If live data successfully returned, incorporate delta
