@@ -4,9 +4,14 @@ import React, { useState } from "react";
 import { COUNTDOWN_DATA, MilestoneProjection } from "@/lib/data/countdownData";
 import { Flame, Target, Calendar, User, Zap } from "lucide-react";
 
-export default function Countdown1000() {
+interface Countdown1000Props {
+  countdown?: typeof COUNTDOWN_DATA;
+}
+
+export default function Countdown1000({ countdown }: Countdown1000Props) {
   const [selectedPace, setSelectedPace] = useState<"career" | "season" | "last365">("season");
-  const { messi, ronaldo, target, projections } = COUNTDOWN_DATA;
+  const data = countdown || COUNTDOWN_DATA;
+  const { messi, ronaldo, target, projections } = data;
 
   const currentProjection: MilestoneProjection = 
     projections.find((p) => p.paceType === selectedPace) || projections[0];

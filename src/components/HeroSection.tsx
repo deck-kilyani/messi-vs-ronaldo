@@ -3,9 +3,28 @@
 import React from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { Trophy, Flame, Swords, BarChart3, Star, Sparkles } from "lucide-react";
+import { DynamicStatsPayload } from "@/lib/api/football-api";
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  stats?: DynamicStatsPayload;
+}
+
+export default function HeroSection({ stats }: HeroSectionProps) {
   const { theme, setTheme } = useTheme();
+
+  const messiGoals = stats?.messi.goals ?? 937;
+  const messiAssists = stats?.messi.assists ?? 428;
+  const messiApps = stats?.messi.apps ?? 1185;
+  const messiMinsPerGoal = stats?.messi.minsPerGoal ?? 104;
+  const messiRatio = messiApps > 0 ? (messiGoals / messiApps).toFixed(2) : "0.79";
+
+  const ronaldoGoals = stats?.ronaldo.goals ?? 985;
+  const ronaldoAssists = stats?.ronaldo.assists ?? 261;
+  const ronaldoApps = stats?.ronaldo.apps ?? 1343;
+  const ronaldoMinsPerGoal = stats?.ronaldo.minsPerGoal ?? 111;
+  const ronaldoRatio = ronaldoApps > 0 ? (ronaldoGoals / ronaldoApps).toFixed(2) : "0.73";
+
+  const isLiveConnected = stats?.apiConnected ?? false;
 
   return (
     <div className="relative pt-8 pb-12 overflow-hidden border-b transition-colors duration-200"
@@ -35,7 +54,11 @@ export default function HeroSection() {
           }}
         >
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>Updated Live · All-Time Verified Statistics Archive</span>
+          <span>
+            {isLiveConnected
+              ? "Live Automated Sync Active · API-Sports Feed"
+              : "Automated API Ready · Verified All-Time Archive"}
+          </span>
         </div>
 
         {/* Grand Title */}
@@ -91,13 +114,13 @@ export default function HeroSection() {
             >
               <div>
                 <span className="text-xl sm:text-2xl font-black block" style={{ color: "var(--messi-primary)" }}>
-                  937
+                  {messiGoals}
                 </span>
                 <span className="text-[10px] font-bold uppercase text-gray-400">Goals</span>
               </div>
               <div>
                 <span className="text-xl sm:text-2xl font-black block" style={{ color: "var(--messi-primary)" }}>
-                  428
+                  {messiAssists}
                 </span>
                 <span className="text-[10px] font-bold uppercase text-gray-400">Assists</span>
               </div>
@@ -110,8 +133,8 @@ export default function HeroSection() {
             </div>
 
             <div className="mt-3 flex justify-between text-xs text-gray-400 font-medium">
-              <span>Ratio: <strong>0.79</strong> goals/game</span>
-              <span>Min/Goal: <strong>104 mins</strong></span>
+              <span>Ratio: <strong>{messiRatio}</strong> goals/game</span>
+              <span>Min/Goal: <strong>{messiMinsPerGoal} mins</strong></span>
             </div>
           </div>
 
@@ -148,13 +171,13 @@ export default function HeroSection() {
             >
               <div>
                 <span className="text-xl sm:text-2xl font-black block" style={{ color: "var(--ronaldo-primary)" }}>
-                  985
+                  {ronaldoGoals}
                 </span>
                 <span className="text-[10px] font-bold uppercase text-gray-400">Goals</span>
               </div>
               <div>
                 <span className="text-xl sm:text-2xl font-black block" style={{ color: "var(--ronaldo-primary)" }}>
-                  261
+                  {ronaldoAssists}
                 </span>
                 <span className="text-[10px] font-bold uppercase text-gray-400">Assists</span>
               </div>
@@ -167,8 +190,8 @@ export default function HeroSection() {
             </div>
 
             <div className="mt-3 flex justify-between text-xs text-gray-400 font-medium">
-              <span>Ratio: <strong>0.73</strong> goals/game</span>
-              <span>Min/Goal: <strong>111 mins</strong></span>
+              <span>Ratio: <strong>{ronaldoRatio}</strong> goals/game</span>
+              <span>Min/Goal: <strong>{ronaldoMinsPerGoal} mins</strong></span>
             </div>
           </div>
 

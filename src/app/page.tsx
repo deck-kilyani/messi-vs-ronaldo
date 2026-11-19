@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HeroSection from "@/components/HeroSection";
 import Countdown1000 from "@/components/Countdown1000";
 import StatCard from "@/components/StatCard";
@@ -12,10 +12,24 @@ import TrophiesSection from "@/components/TrophiesSection";
 import EditorialSection from "@/components/EditorialSection";
 import VoteSection from "@/components/VoteSection";
 import { MAIN_COMPARISON_CATEGORIES } from "@/lib/data/statsData";
+import { DynamicStatsPayload } from "@/lib/api/football-api";
 import { BarChart3, Filter } from "lucide-react";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>("all");
+  const [dynamicStats, setDynamicStats] = useState<DynamicStatsPayload | undefined>(undefined);
+
+  useEffect(() => {
+    // Automatically query the internal stats API for any live updates
+    fetch("/api/stats")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: DynamicStatsPayload | null) => {
+        if (data) setDynamicStats(data);
+      })
+      .catch((err) => console.log("Baseline stats loaded:", err));
+  }, []);
+
+  const categoriesToUse = dynamicStats?.categories || MAIN_COMPARISON_CATEGORIES;
 
   const filterTabs = [
     { id: "all", label: "All Categories (9)" },
@@ -24,7 +38,7 @@ export default function Home() {
     { id: "international", label: "International & Cups" },
   ];
 
-  const filteredCategories = MAIN_COMPARISON_CATEGORIES.filter((cat) => {
+  const filteredCategories = categoriesToUse.filter((cat) => {
     if (activeTab === "all") return true;
     if (activeTab === "career") {
       return (
@@ -50,10 +64,10 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* 1. Hero Section */}
-      <HeroSection />
+      <HeroSection stats={dynamicStats} />
 
       {/* 2. Historic 1000 Goals Countdown Tracker */}
-      <Countdown1000 />
+      <Countdown1000 countdown={dynamicStats?.countdown} />
 
       {/* 3. Core Head-to-Head Comparison Cards */}
       <section id="overview" className="py-12 border-b"
